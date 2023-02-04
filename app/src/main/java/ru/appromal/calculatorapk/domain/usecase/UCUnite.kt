@@ -14,7 +14,8 @@ class UCUnite {
 
 
     fun addSing(dSendCharTask: DSendNewCharTask){
-        stackTask = CreateStringTask(DAddNewCharInTask(dLastStack = stackTask, dNewChar = dSendCharTask)).execute()
+        val params = CreateStringTask(DAddNewCharInTask(dLastStack = stackTask, dNewChar = dSendCharTask)).execute()
+        stackTask = params.dLastStack
     }
     fun returnText(): String{
         if(stackTask.isEmpty())

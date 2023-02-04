@@ -33,6 +33,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
         readStack()
         if (countSing > 99){
             isEError = EError.MAX_SING
+            isErrorAddNewSing = true
         }
         else {
             when (newCharInfo) {
@@ -60,7 +61,6 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
         return DReturnNewStackWithTask(dLastStack = lastStack,dError = isEError)
     }
 
-
     private fun validationInt() {
         if (countNumbers > 14 ) {
             isEError = EError.MAX_NUMBERS
@@ -80,12 +80,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             rewriteLastNumbers()
             return
         }
-        stringTask += newCharSing
-        lastChar = newCharSing
-        countSing++
-        countNumbers++
-        if (isDouble)
-            countNumbersAfterDot++
+        rewriteVariables(addCountNumders = true, addCountNumbersAfterDot =  isDouble)
     }
 
     // Добавление точки в десятичную дробь
@@ -99,10 +94,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             isErrorAddNewSing = true
             return
         }
-        stringTask += newCharSing
-        lastChar = newCharSing
-        countSing++
-        countNumbers++
+        rewriteVariables(addCountNumders = true, addCountNumbersAfterDot =  false)
         isDouble = true
     }
 
@@ -116,11 +108,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             isEError = EError.SING_END
             return
         }
-        stringTask += newCharSing
-        lastChar = newCharSing
-        countSing++
-        countNumbers = 0
-        countNumbersAfterDot = 0
+        rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
         isDouble = false
     }
 
@@ -129,11 +117,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             isErrorAddNewSing = true
             return
         }
-        stringTask += newCharSing
-        lastChar = newCharSing
-        countSing++
-        countNumbers = 0
-        countNumbersAfterDot = 0
+        rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
         isDouble = false
         countBracket++
     }
@@ -143,11 +127,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             isErrorAddNewSing = true
             return
         }
-        stringTask += newCharSing
-        lastChar = newCharSing
-        countSing++
-        countNumbers = 0
-        countNumbersAfterDot = 0
+        rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
         isDouble = false
         countBracket--
     }
@@ -173,4 +153,18 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
         countBracket = params.dCountBracket
     }
 
+    // Обновляем переменные
+    private fun rewriteVariables(addCountNumders: Boolean, addCountNumbersAfterDot: Boolean){
+        stringTask += newCharSing
+        lastChar = newCharSing
+        countSing++
+        if(addCountNumders)
+            countNumbers++
+        else
+            countNumbers = 0
+        if(addCountNumbersAfterDot)
+            countNumbersAfterDot++
+        else
+            countNumbersAfterDot = 0
+    }
 }
