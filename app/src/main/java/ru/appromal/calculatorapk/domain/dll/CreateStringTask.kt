@@ -108,12 +108,13 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             isEError = EError.SING_END
             return
         }
+        isEError = EError.SING_END
         rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
         isDouble = false
     }
 
     private fun validationBrOpen() {
-        if (lastChar in "0".."9" || lastChar == ")") {
+        if (lastChar in "0".."9" || lastChar == ")" || lastChar == ".") {
             isErrorAddNewSing = true
             return
         }
