@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@android:color/white"
 android:orientation="vertical"
-tools:context=".MainActivity">
+tools:context=".presentation.MainActivity">
 
     <TextView
         android:id="@+id/task"
@@ -156,7 +156,7 @@ tools:context=".MainActivity">
                 android:text="0">
             </TextView>
             <TextView
-                android:id="@+id/btn_double"
+                android:id="@+id/btn_dot"
                 style="@style/BntNumbers"
                 android:text=",">
             </TextView>
