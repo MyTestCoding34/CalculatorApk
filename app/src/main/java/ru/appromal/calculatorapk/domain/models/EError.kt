@@ -1,6 +1,7 @@
 package ru.appromal.calculatorapk.domain.models
-
-enum class EError(val isErrorEasyEnum: Boolean, val isErrorFatalEnum: Boolean, val isErrorTextEnum: String) {
+// isErrorFatalEnum
+// isErrorEasyEnum
+enum class EError(val isErrorFatalEnum: Boolean, val isErrorEasyEnum: Boolean, val isErrorTextEnum: String) {
     MAX_SING(false, true,
         "Максимально допустимое количество не более 100 знаков в примере!"),
     MAX_NUMBERS(false, true,

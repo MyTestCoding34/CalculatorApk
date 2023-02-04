@@ -2,7 +2,6 @@ package ru.appromal.calculatorapk.domain.dll
 
 import ru.appromal.calculatorapk.domain.models.DAddNewCharInTask
 import ru.appromal.calculatorapk.domain.models.DHistoryAddSings
-import ru.appromal.calculatorapk.domain.models.DReturnNewStackWithTask
 import ru.appromal.calculatorapk.domain.models.EError
 
 /*
@@ -25,11 +24,11 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
     private var isErrorAddNewSing: Boolean = false
 
     private val lastStack = dAddNewCharInTask.dLastStack
-    private val newCharInfo = dAddNewCharInTask.dNewChar.type
-    private val newCharSing =  dAddNewCharInTask.dNewChar.sing
+    private val newCharInfo = dAddNewCharInTask.dNewChar.dType
+    private val newCharSing =  dAddNewCharInTask.dNewChar.dSing
 
     // Вызываемая функция с других классов класса
-    fun execute(): DReturnNewStackWithTask {
+    fun execute(): EError {
         readStack()
         if (countSing > 99){
             isEError = EError.MAX_SING
@@ -58,7 +57,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
             lastStack.push(params)
         if (countBracket>0)
             isEError = EError.BRACKET
-        return DReturnNewStackWithTask(dLastStack = lastStack,dError = isEError)
+        return isEError
     }
 
     private fun validationInt() {

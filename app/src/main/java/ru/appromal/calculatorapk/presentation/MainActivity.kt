@@ -21,40 +21,40 @@ class MainActivity : AppCompatActivity() {
         textTaskView = findViewById(R.id.task)
 
 
-        findViewById<TextView>(R.id.btn_0).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "0", type = "INT"))
+        findViewById<TextView>(R.id.btn_0).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "0", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_1).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "1", type = "INT"))
+        findViewById<TextView>(R.id.btn_1).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "1", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_2).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "2", type = "INT"))
+        findViewById<TextView>(R.id.btn_2).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "2", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_3).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "3", type = "INT"))
+        findViewById<TextView>(R.id.btn_3).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "3", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_4).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "4", type = "INT"))
+        findViewById<TextView>(R.id.btn_4).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "4", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_5).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "5", type = "INT"))
+        findViewById<TextView>(R.id.btn_5).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "5", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_6).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "6", type = "INT"))
+        findViewById<TextView>(R.id.btn_6).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "6", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_7).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "7", type = "INT"))
+        findViewById<TextView>(R.id.btn_7).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "7", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_8).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "8", type = "INT"))
+        findViewById<TextView>(R.id.btn_8).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "8", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_9).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "9", type = "INT"))
+        findViewById<TextView>(R.id.btn_9).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "9", dType = "INT"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_dot).setOnClickListener{unite.addSing(DSendNewCharTask(sing = ".", type = "DOT"))
+        findViewById<TextView>(R.id.btn_dot).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = ".", dType = "DOT"))
             textTaskView.text = unite.returnText()}
 
-        findViewById<TextView>(R.id.btn_open_bracket).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "(", type = "BR_OPEN"))
+        findViewById<TextView>(R.id.btn_open_bracket).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "(", dType = "BR_OPEN"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_close_bracket).setOnClickListener{unite.addSing(DSendNewCharTask(sing = ")", type = "BR_CLOSE"))
+        findViewById<TextView>(R.id.btn_close_bracket).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = ")", dType = "BR_CLOSE"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_share).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "/", type = "SING"))
+        findViewById<TextView>(R.id.btn_share).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "/", dType = "SING"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_multiply).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "*", type = "SING"))
+        findViewById<TextView>(R.id.btn_multiply).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "*", dType = "SING"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_minus).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "-", type = "SING"))
+        findViewById<TextView>(R.id.btn_minus).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "-", dType = "SING"))
             textTaskView.text = unite.returnText()}
-        findViewById<TextView>(R.id.btn_sum).setOnClickListener{unite.addSing(DSendNewCharTask(sing = "+", type = "SING"))
+        findViewById<TextView>(R.id.btn_sum).setOnClickListener{unite.addSing(DSendNewCharTask(dSing = "+", dType = "SING"))
             textTaskView.text = unite.returnText()}
 
         findViewById<TextView>(R.id.btn_back).setOnClickListener{unite.deleteChar()
