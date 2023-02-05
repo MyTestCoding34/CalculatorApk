@@ -2,7 +2,6 @@ package ru.appromal.calculatorapk.domain.dll
 
 import ru.appromal.calculatorapk.domain.models.DAddNewCharInTask
 import ru.appromal.calculatorapk.domain.models.DHistoryAddSigns
-import ru.appromal.calculatorapk.domain.models.EError
 
 /*
 readStack()                 - проверяем если стек не пустой считываем значения.
@@ -12,35 +11,31 @@ rewriteLastNumbers()        - если целое число начинаетс�
 class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
 
     private var stringTask: String = ""
-    private var lastChar: String = ""
+    private var lastChar: Char = ' '
     private var countSign: Int = 0
     private var countNumbers: Int = 0
     private var countNumbersAfterDot: Int = 0
     private var isDouble: Boolean = false
     private var countBracket: Int = 0
 
-    private var isEError: EError = EError.NO_ERROR
-
     private var isErrorAddNewSign: Boolean = false
 
     private val lastStack = dAddNewCharInTask.dLastStack
-    private val newCharInfo = dAddNewCharInTask.dNewChar.dType
     private val newCharSign =  dAddNewCharInTask.dNewChar.dSign
 
     // Вызываемая функция с других классов класса
-    fun execute(): EError {
+    fun execute() {
         readStack()
         if (countSign > 99){
-            isEError = EError.MAX_SIGN
             isErrorAddNewSign = true
         }
         else {
-            when (newCharInfo) {
-                "INT" -> validationInt()
-                "DOT" -> validationDot()
-                "SIGN" -> validationSign()
-                "BR_OPEN" -> validationBrOpen()
-                "BR_CLOSE" -> validationBrClose()
+            when (newCharSign) {
+                in '0'..'9' -> validationInt()
+                '.' -> validationDot()
+                '+', '-', '*', '/' -> validationSign()
+                '(', ')'-> validationBracket(newCharSign)
+                else -> isErrorAddNewSign = true
             }
         }
 
@@ -55,27 +50,14 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
         )
         if (!isErrorAddNewSign)
             lastStack.push(params)
-        if (countBracket>0)
-            isEError = EError.BRACKET
-        return isEError
     }
 
     private fun validationInt() {
-        if (countNumbers > 14 ) {
-            isEError = EError.MAX_NUMBERS
+        if (countNumbers > 14 || countNumbersAfterDot > 9 || lastChar == ')') {
             isErrorAddNewSign = true
             return
         }
-        if (countNumbersAfterDot > 9) {
-            isEError = EError.MAX_NUMBERS_DOUBLE
-            isErrorAddNewSign = true
-            return
-        }
-        if (lastChar == ")") {
-            isErrorAddNewSign = true
-            return
-        }
-        if (countNumbers == 1 && lastChar == "0") {
+        if (countNumbers == 1 && lastChar == '0') {
             rewriteLastNumbers()
             return
         }
@@ -84,12 +66,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
 
     // Добавление точки в десятичную дробь
     private fun validationDot() {
-        if (countNumbers > 14 ) {
-            isEError = EError.MAX_NUMBERS
-            isErrorAddNewSign = true
-            return
-        }
-        if (isDouble || countNumbers < 1) {
+        if (countNumbers > 14 || isDouble || countNumbers < 1) {
             isErrorAddNewSign = true
             return
         }
@@ -98,40 +75,39 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
     }
 
     private fun validationSign() {
-        if (countSign == 0 || lastChar == "(") {
+        if (countSign == 0 || lastChar == '(') {
             isErrorAddNewSign = true
             return
         }
-        if(lastChar == "/" || lastChar == "*" || lastChar == "-" || lastChar == "+") {
+        if(lastChar == '/' || lastChar == '*' || lastChar == '-' || lastChar == '+') {
             rewriteLastNumbers()
-            isEError = EError.SIGN_END
             return
         }
-        isEError = EError.SIGN_END
         rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot =  false)
         isDouble = false
     }
 
-    private fun validationBrOpen() {
-        if (lastChar in "0".."9" || lastChar == ")" || lastChar == ".") {
+
+    private fun validationBracket(bracketType: Char) {
+        val errorBrackets =
+            if (bracketType == '(') {
+                lastChar in '0'..'9' || lastChar == ')' || lastChar == '.'
+            }
+            else {
+                countBracket == 0 || lastChar == '/' || lastChar == '*' || lastChar == '-' || lastChar == '+'
+            }
+        if (errorBrackets) {
             isErrorAddNewSign = true
             return
         }
-        rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot =  false)
-        isDouble = false
-        countBracket++
+        rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot = false)
+        if (bracketType == '(')
+            countBracket++
+        else
+            countBracket--
     }
 
-    private fun validationBrClose() {
-        if (countBracket == 0 || lastChar == "/" || lastChar == "*" || lastChar == "-" || lastChar == "+") {
-            isErrorAddNewSign = true
-            return
-        }
-        rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot =  false)
-        isDouble = false
-        countBracket--
-    }
-
+    // Служит для перезаписи математического знака или 0 в начале числа
     private fun rewriteLastNumbers() {
         stringTask = stringTask.substring(0, stringTask.length - 1) + newCharSign
         lastChar = newCharSign

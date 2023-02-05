@@ -12,14 +12,10 @@ stackTaskHistory        - стек под историю добавления с
 class UCUnite {
     private var stackTaskHistory = Stack<DHistoryAddSigns>()
     private var stackTask = Stack<String>()
-    private var paramsAnswerCreateString: EError = EError.NO_ERROR
-    private var answerCalculator: DReturnAnswerTask = DReturnAnswerTask(dStringAnswer = "", dError = paramsAnswerCreateString)
+    private var answerCalculator: DReturnAnswerTask = DReturnAnswerTask(dStringAnswer = "", dError = EError.NO_ERROR)
 
-
-
-
-    fun addSign(dSendCharTask: DSendNewCharTask){
-        paramsAnswerCreateString = CreateStringTask(DAddNewCharInTask(dLastStack = stackTaskHistory, dNewChar = dSendCharTask)).execute()
+    fun addSign(dSendCharTask: DAddSign){
+        CreateStringTask(DAddNewCharInTask(dLastStack = stackTaskHistory, dNewChar = dSendCharTask)).execute()
     }
 
     fun returnText(): String{
@@ -38,12 +34,15 @@ class UCUnite {
         }
     }
 
-    fun returnAnswer(): String{
-        if (!paramsAnswerCreateString.isErrorFatalEnum){
-            if(!stackTaskHistory.isEmpty()) {
-                StringToStack().execute(stackTaskHistory.peek().dStringTask, stackTask)
+    fun returnAnswer(): String {
+        if (!stackTaskHistory.isEmpty()) {
+            val lastCallStack = stackTaskHistory.peek()
+            if (lastCallStack.dLastChar != '/' && lastCallStack.dLastChar != '*' && lastCallStack.dLastChar != '-' && lastCallStack.dLastChar != '+' && lastCallStack.dCountBracket == 0) {
+                StringToStack().execute(lastCallStack.dStringTask, stackTask)
                 answerCalculator = Calculator(stackTask).execute()
             }
+            else
+                return ""
         }
         return answerCalculator.dStringAnswer
     }

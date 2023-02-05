@@ -4,5 +4,5 @@ import ru.appromal.calculatorapk.domain.dll.Stack
 
 data class DAddNewCharInTask (
     val dLastStack: Stack<DHistoryAddSigns>,
-    val dNewChar: DSendNewCharTask
+    val dNewChar: DAddSign
 )

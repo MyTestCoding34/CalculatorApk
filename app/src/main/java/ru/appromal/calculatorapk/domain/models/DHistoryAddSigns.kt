@@ -15,7 +15,7 @@ isErrorFatal            - Ошибка выводящаяся в сплываю�
 
 data class DHistoryAddSigns(
     val dStringTask: String,
-    val dLastChar: String,
+    val dLastChar: Char,
     val dCountSign: Int,
     val dCountNumbers: Int,
     val dCountNumbersAfterDot: Int,
