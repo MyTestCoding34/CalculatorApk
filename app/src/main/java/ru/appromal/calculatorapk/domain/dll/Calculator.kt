@@ -7,9 +7,9 @@ class Calculator(private val stackTask: Stack<String>) {
     // Создаём стек под дробные цифры
     private val stackDouble: Stack<Double> = Stack()
     // Создаём стек под мат знаки
-    private val stackSing: Stack<String> = Stack()
+    private val stackSign: Stack<String> = Stack()
     // Размер стека с знаками
-    private var sizeStkSing = 0
+    private var sizeStackSign = 0
     // Переменная под значения с массива Очереди в который поместили разбитую строку
     private lateinit var whenString: String
     // Переменная под ошибку
@@ -22,7 +22,7 @@ class Calculator(private val stackTask: Stack<String>) {
 
     private fun calculator(){
         // Переменная под временное хранение мат. знаков
-        var tempSing: String
+        var tempSign: String
         // Переменная для запуска цикла чтения
         var whileBoolean = true
 
@@ -31,19 +31,19 @@ class Calculator(private val stackTask: Stack<String>) {
             if (whenString == "(") {
                 remake()
             } else if (whenString == ")") {
-                tempSing = stackSing.pop()
-                if (tempSing == "(") {
-                    sizeStkSing--
+                tempSign = stackSign.pop()
+                if (tempSign == "(") {
+                    sizeStackSign--
                     stackTask.pop()
                 } else {
-                    stackSing.push(tempSing)
+                    stackSign.push(tempSign)
                     lastAction()
                 }
             } else if (whenString == "/" || whenString == "*" || whenString == "-" || whenString == "+") {
-                if (sizeStkSing <= 0 || stackSing.peek() == "("
-                    || singPriority(whenString, stackSing.peek()) == 1)
+                if (sizeStackSign <= 0 || stackSign.peek() == "("
+                    || signPriority(whenString, stackSign.peek()) == 1)
                     remake()
-                else if (singPriority(whenString, stackSing.peek()) == 2)
+                else if (signPriority(whenString, stackSign.peek()) == 2)
                     lastAction()
                 else
                     lastAction()
@@ -55,24 +55,24 @@ class Calculator(private val stackTask: Stack<String>) {
                 whileBoolean = false
 
         }
-        if (!stackSing.isEmpty()) {
-            for (i in 1..sizeStkSing){
+        if (!stackSign.isEmpty()) {
+            for (i in 1..sizeStackSign){
                 lastAction()
             }
         }
     }
 
     //Функция определяет приоритет мат. знака над предыдущим в стеке
-    private fun singPriority(value1: String, value2: String): Int {
-        if (prioritySing(value1) > prioritySing(value2))
+    private fun signPriority(value1: String, value2: String): Int {
+        if (prioritySign(value1) > prioritySign(value2))
             return 1
-        else if (prioritySing(value1) == prioritySing(value2))
+        else if (prioritySign(value1) == prioritySign(value2))
             return 2
         return 3
     }
 
     // Функция возвращает приоритет мат. знака
-    private fun prioritySing(value: String): Int {
+    private fun prioritySign(value: String): Int {
         return when (value) {
             ")" -> 0
             "(" -> 0
@@ -104,14 +104,14 @@ class Calculator(private val stackTask: Stack<String>) {
     // получившегося значения в стек. Так же уменьшаем значение переменной размер
     // стека знаков
     private fun lastAction() {
-        sizeStkSing--
-        stackDouble.push(mathematicalAction(stackDouble.pop(), stackDouble.pop(), stackSing.pop()))
+        sizeStackSign--
+        stackDouble.push(mathematicalAction(stackDouble.pop(), stackDouble.pop(), stackSign.pop()))
     }
 
     // Функция переносит математичиский знак с стека с заданием с стек с знаками
     private fun remake() {
-        sizeStkSing++
-        stackSing.push(whenString)
+        sizeStackSign++
+        stackSign.push(whenString)
         stackTask.pop()
     }
 }

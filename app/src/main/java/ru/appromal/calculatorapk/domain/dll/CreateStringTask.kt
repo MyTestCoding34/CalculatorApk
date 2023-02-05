@@ -1,7 +1,7 @@
 package ru.appromal.calculatorapk.domain.dll
 
 import ru.appromal.calculatorapk.domain.models.DAddNewCharInTask
-import ru.appromal.calculatorapk.domain.models.DHistoryAddSings
+import ru.appromal.calculatorapk.domain.models.DHistoryAddSigns
 import ru.appromal.calculatorapk.domain.models.EError
 
 /*
@@ -13,7 +13,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
 
     private var stringTask: String = ""
     private var lastChar: String = ""
-    private var countSing: Int = 0
+    private var countSign: Int = 0
     private var countNumbers: Int = 0
     private var countNumbersAfterDot: Int = 0
     private var isDouble: Boolean = false
@@ -21,39 +21,39 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
 
     private var isEError: EError = EError.NO_ERROR
 
-    private var isErrorAddNewSing: Boolean = false
+    private var isErrorAddNewSign: Boolean = false
 
     private val lastStack = dAddNewCharInTask.dLastStack
     private val newCharInfo = dAddNewCharInTask.dNewChar.dType
-    private val newCharSing =  dAddNewCharInTask.dNewChar.dSing
+    private val newCharSign =  dAddNewCharInTask.dNewChar.dSign
 
     // Вызываемая функция с других классов класса
     fun execute(): EError {
         readStack()
-        if (countSing > 99){
-            isEError = EError.MAX_SING
-            isErrorAddNewSing = true
+        if (countSign > 99){
+            isEError = EError.MAX_SIGN
+            isErrorAddNewSign = true
         }
         else {
             when (newCharInfo) {
                 "INT" -> validationInt()
                 "DOT" -> validationDot()
-                "SING" -> validationSing()
+                "SIGN" -> validationSign()
                 "BR_OPEN" -> validationBrOpen()
                 "BR_CLOSE" -> validationBrClose()
             }
         }
 
-        val params = DHistoryAddSings(
+        val params = DHistoryAddSigns(
             dStringTask = stringTask,
             dLastChar = lastChar,
-            dCountSing = countSing,
+            dCountSign = countSign,
             dCountNumbers = countNumbers,
             dCountNumbersAfterDot = countNumbersAfterDot,
             dIsDouble = isDouble,
             dCountBracket = countBracket
         )
-        if (!isErrorAddNewSing)
+        if (!isErrorAddNewSign)
             lastStack.push(params)
         if (countBracket>0)
             isEError = EError.BRACKET
@@ -63,78 +63,78 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
     private fun validationInt() {
         if (countNumbers > 14 ) {
             isEError = EError.MAX_NUMBERS
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
         if (countNumbersAfterDot > 9) {
             isEError = EError.MAX_NUMBERS_DOUBLE
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
         if (lastChar == ")") {
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
         if (countNumbers == 1 && lastChar == "0") {
             rewriteLastNumbers()
             return
         }
-        rewriteVariables(addCountNumders = true, addCountNumbersAfterDot =  isDouble)
+        rewriteVariables(addCountNumbers = true, addCountNumbersAfterDot =  isDouble)
     }
 
     // Добавление точки в десятичную дробь
     private fun validationDot() {
         if (countNumbers > 14 ) {
             isEError = EError.MAX_NUMBERS
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
         if (isDouble || countNumbers < 1) {
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
-        rewriteVariables(addCountNumders = true, addCountNumbersAfterDot =  false)
+        rewriteVariables(addCountNumbers = true, addCountNumbersAfterDot =  false)
         isDouble = true
     }
 
-    private fun validationSing() {
-        if (countSing == 0 || lastChar == "(") {
-            isErrorAddNewSing = true
+    private fun validationSign() {
+        if (countSign == 0 || lastChar == "(") {
+            isErrorAddNewSign = true
             return
         }
         if(lastChar == "/" || lastChar == "*" || lastChar == "-" || lastChar == "+") {
             rewriteLastNumbers()
-            isEError = EError.SING_END
+            isEError = EError.SIGN_END
             return
         }
-        isEError = EError.SING_END
-        rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
+        isEError = EError.SIGN_END
+        rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot =  false)
         isDouble = false
     }
 
     private fun validationBrOpen() {
         if (lastChar in "0".."9" || lastChar == ")" || lastChar == ".") {
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
-        rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
+        rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot =  false)
         isDouble = false
         countBracket++
     }
 
     private fun validationBrClose() {
         if (countBracket == 0 || lastChar == "/" || lastChar == "*" || lastChar == "-" || lastChar == "+") {
-            isErrorAddNewSing = true
+            isErrorAddNewSign = true
             return
         }
-        rewriteVariables(addCountNumders = false, addCountNumbersAfterDot =  false)
+        rewriteVariables(addCountNumbers = false, addCountNumbersAfterDot =  false)
         isDouble = false
         countBracket--
     }
 
     private fun rewriteLastNumbers() {
-        stringTask = stringTask.substring(0, stringTask.length - 1) + newCharSing
-        lastChar = newCharSing
+        stringTask = stringTask.substring(0, stringTask.length - 1) + newCharSign
+        lastChar = newCharSign
         // Удаляем последний элемент в стеке символов, в дальнейшем он перезапишится
         lastStack.pop()
     }
@@ -146,7 +146,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
         val params = lastStack.peek()
         stringTask = params.dStringTask
         lastChar = params.dLastChar
-        countSing = params.dCountSing
+        countSign = params.dCountSign
         countNumbers = params.dCountNumbers
         countNumbersAfterDot = params.dCountNumbersAfterDot
         isDouble = params.dIsDouble
@@ -154,11 +154,11 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
     }
 
     // Обновляем переменные
-    private fun rewriteVariables(addCountNumders: Boolean, addCountNumbersAfterDot: Boolean){
-        stringTask += newCharSing
-        lastChar = newCharSing
-        countSing++
-        if(addCountNumders)
+    private fun rewriteVariables(addCountNumbers: Boolean, addCountNumbersAfterDot: Boolean){
+        stringTask += newCharSign
+        lastChar = newCharSign
+        countSign++
+        if(addCountNumbers)
             countNumbers++
         else
             countNumbers = 0

@@ -13,10 +13,10 @@ isErrorEasy             - Ошибка не останавливающая вы�
 isErrorFatal            - Ошибка выводящаяся в сплывающем окне и остонавливающая ввод.
  */
 
-data class DHistoryAddSings(
+data class DHistoryAddSigns(
     val dStringTask: String,
     val dLastChar: String,
-    val dCountSing: Int,
+    val dCountSign: Int,
     val dCountNumbers: Int,
     val dCountNumbersAfterDot: Int,
     val dIsDouble:Boolean,

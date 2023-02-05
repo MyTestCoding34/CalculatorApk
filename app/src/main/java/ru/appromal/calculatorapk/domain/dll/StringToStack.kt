@@ -4,12 +4,11 @@ package ru.appromal.calculatorapk.domain.dll
  будет удобней работать.
  */
 class StringToStack {
-    fun execute(task: String): Stack<String>{
+    fun execute(task: String, stackTask: Stack<String>){
         // Объявляем Флаг, будет служить для определения закончилось ли число или нет.
         // При значение в истена значение всегда добавляется в новую ячейку
         var intBoolean = true
-        // Создаём объект класса Stack
-        val stackTask: Stack<String> = Stack()
+        stackTask.clearAll()
 
         for(valueChar in task){
             // Проверяем является ли символ цифрой или точкой
@@ -32,6 +31,5 @@ class StringToStack {
             }
         }
         stackTask.reverse()
-        return stackTask
     }
 }

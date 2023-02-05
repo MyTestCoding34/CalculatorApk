@@ -1,26 +1,27 @@
 package ru.appromal.calculatorapk.domain.usecase
 
+import ru.appromal.calculatorapk.domain.dll.Calculator
 import ru.appromal.calculatorapk.domain.dll.CreateStringTask
 import ru.appromal.calculatorapk.domain.dll.Stack
+import ru.appromal.calculatorapk.domain.dll.StringToStack
 import ru.appromal.calculatorapk.domain.models.*
+/*
+stackTaskHistory        - стек под историю добавления символов
 
+ */
 class UCUnite {
-    private var stackTaskHistory = Stack<DHistoryAddSings>()
-
+    private var stackTaskHistory = Stack<DHistoryAddSigns>()
+    private var stackTask = Stack<String>()
     private var paramsAnswerCreateString: EError = EError.NO_ERROR
+    private var answerCalculator: DReturnAnswerTask = DReturnAnswerTask(dStringAnswer = "", dError = paramsAnswerCreateString)
 
 
 
 
-    fun addSing(dSendCharTask: DSendNewCharTask){
+    fun addSign(dSendCharTask: DSendNewCharTask){
         paramsAnswerCreateString = CreateStringTask(DAddNewCharInTask(dLastStack = stackTaskHistory, dNewChar = dSendCharTask)).execute()
-//        val errors = params.dError
-//        stackTaskHistory = params.dLastStack
-//        if (!errors.isErrorEasyEnum){
-//            stackTask = StringToStack().execute(stackTaskHistory.peek().dStringTask)
-//            answerCalculator = Calculator(stackTask).execute()
-//        }
     }
+
     fun returnText(): String{
         if(stackTaskHistory.isEmpty())
             return ""
@@ -37,9 +38,13 @@ class UCUnite {
         }
     }
 
-    private fun resultWork(){
+    fun returnAnswer(): String{
         if (!paramsAnswerCreateString.isErrorFatalEnum){
-
+            if(!stackTaskHistory.isEmpty()) {
+                StringToStack().execute(stackTaskHistory.peek().dStringTask, stackTask)
+                answerCalculator = Calculator(stackTask).execute()
+            }
         }
+        return answerCalculator.dStringAnswer
     }
 }
