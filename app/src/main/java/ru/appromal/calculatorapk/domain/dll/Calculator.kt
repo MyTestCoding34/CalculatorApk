@@ -2,6 +2,7 @@ package ru.appromal.calculatorapk.domain.dll
 
 import ru.appromal.calculatorapk.domain.models.DReturnAnswerTask
 import ru.appromal.calculatorapk.domain.models.EError
+import java.text.DecimalFormat
 
 class Calculator(private val stackTask: Stack<String>) {
     // Создаём стек под дробные цифры
@@ -12,12 +13,11 @@ class Calculator(private val stackTask: Stack<String>) {
     private var sizeStackSign = 0
     // Переменная под значения с массива Очереди в который поместили разбитую строку
     private lateinit var whenString: String
-    // Переменная под ошибку
-    private var errorAnswer: EError = EError.NO_ERROR
 
     fun execute(): DReturnAnswerTask {
         calculator()
-        return DReturnAnswerTask(dStringAnswer = stackDouble.peek().toString(), dError = errorAnswer)
+        val answer = roundNumber(stackDouble.peek())
+        return DReturnAnswerTask(dStringAnswer = answer)
     }
 
     private fun calculator(){
@@ -92,7 +92,7 @@ class Calculator(private val stackTask: Stack<String>) {
             "*" -> num1 * num2
             "/" -> {
                 if (num2 == 0.0) {
-                    errorAnswer = EError.BY_ZERO
+                    throw Exception(EError.BY_ZERO.isErrorTextEnum)
                 }
                 num1 / num2
             }
@@ -113,5 +113,11 @@ class Calculator(private val stackTask: Stack<String>) {
         sizeStackSign++
         stackSign.push(whenString)
         stackTask.pop()
+    }
+    // TODO Функцию нужно будет переписать, написать самостоятельное округление
+    private fun roundNumber(answerText: Double ):String{
+        if (answerText<999999999999999)
+            return DecimalFormat("0.##########").format(answerText)
+        return answerText.toString()
     }
 }

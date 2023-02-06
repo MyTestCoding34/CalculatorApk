@@ -77,7 +77,9 @@ class MainActivity : AppCompatActivity() {
             textTaskView.text = unite.returnText()
             textAnswerView.text = unite.returnAnswer()}
         findViewById<TextView>(R.id.btn_answer).setOnClickListener{
-            textAnswerView.text = unite.returnAnswer()}
+            val result = "${unite.returnText()}${unite.returnAnswer(true)}"
+            textTaskView.text = result
+            textAnswerView.text = ""}
         findViewById<TextView>(R.id.btn_clear).setOnClickListener{unite.deleteTask()
             textTaskView.text = unite.returnText()
             textAnswerView.text = ""}

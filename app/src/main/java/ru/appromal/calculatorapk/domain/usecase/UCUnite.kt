@@ -12,7 +12,6 @@ stackTaskHistory        - стек под историю добавления с
 class UCUnite {
     private var stackTaskHistory = Stack<DHistoryAddSigns>()
     private var stackTask = Stack<String>()
-    private var answerCalculator: DReturnAnswerTask = DReturnAnswerTask(dStringAnswer = "", dError = EError.NO_ERROR)
 
     fun addSign(dSendCharTask: DAddSign){
         CreateStringTask(DAddNewCharInTask(dLastStack = stackTaskHistory, dNewChar = dSendCharTask)).execute()
@@ -34,16 +33,27 @@ class UCUnite {
         }
     }
 
-    fun returnAnswer(): String {
+    fun returnAnswer(reset: Boolean = false): String {
+        var result = ""
+        var resetF = reset
         if (!stackTaskHistory.isEmpty()) {
             val lastCallStack = stackTaskHistory.peek()
-            if (lastCallStack.dLastChar != '/' && lastCallStack.dLastChar != '*' && lastCallStack.dLastChar != '-' && lastCallStack.dLastChar != '+' && lastCallStack.dCountBracket == 0) {
-                StringToStack().execute(lastCallStack.dStringTask, stackTask)
-                answerCalculator = Calculator(stackTask).execute()
+            if (lastCallStack.dLastChar in listOf('/', '*', '-', '+') || lastCallStack.dCountBracket > 0) {
+                resetF = false
             }
-            else
-                return ""
+            else{
+                StringToStack().execute(lastCallStack.dStringTask, stackTask)
+                try{
+                    result =" = ${Calculator(stackTask).execute().dStringAnswer}"
+                }
+                catch (e: Exception){
+                    result =e.toString().split(":")[1]
+                    resetF = false
+                }
+            }
         }
-        return answerCalculator.dStringAnswer
+        if (resetF)
+            deleteTask()
+        return result
     }
 }

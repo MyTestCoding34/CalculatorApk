@@ -94,7 +94,7 @@ class CreateStringTask(dAddNewCharInTask: DAddNewCharInTask) {
                 lastChar in '0'..'9' || lastChar == ')' || lastChar == '.'
             }
             else {
-                countBracket == 0 || lastChar == '/' || lastChar == '*' || lastChar == '-' || lastChar == '+'
+                countBracket == 0 || lastChar == '(' || lastChar == '/' || lastChar == '*' || lastChar == '-' || lastChar == '+'
             }
         if (errorBrackets) {
             isErrorAddNewSign = true

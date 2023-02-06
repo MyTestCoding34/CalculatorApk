@@ -14,7 +14,7 @@ tools:context=".presentation.MainActivity">
         android:layout_height="160dp"
         android:text=""
         android:textColor="@android:color/black"
-        android:textSize="27sp"
+        android:textSize="20sp"
         android:gravity="bottom|end"
         />
 
@@ -22,7 +22,7 @@ tools:context=".presentation.MainActivity">
         android:id="@+id/answer"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="this answer"
+        android:text=""
         android:textColor="@android:color/black"
         android:textSize="30sp"
         android:gravity="end"
