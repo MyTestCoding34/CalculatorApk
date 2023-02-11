@@ -5,34 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
     tools:context=".presentation.MainActivity">
 
-    <TextView
-        android:id="@+id/task"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:text=""
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:gravity="bottom|end"
-        />
-
-    <TextView
-        android:id="@+id/answer"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text=""
-        android:textColor="@android:color/black"
-        android:textSize="26sp"
-        android:gravity="end"
-        android:ellipsize="start"
-        android:singleLine="true"
-        />
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:background="@color/black"
+        >
+        <TextView
+            android:id="@+id/task"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.85"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:background="@color/white"
+            android:textSize="20sp"
+            android:gravity="bottom|end"
+            />
+        <TextView
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:background="@color/white"
+            android:textSize="26sp"
+            android:gravity="end"
+            android:ellipsize="start"
+            android:singleLine="true"
+            />
+    </TableLayout>
 
     <TableLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="0.5"
         android:background="@color/black"
         >
         <TableRow
@@ -173,4 +185,6 @@
         </TableRow>
 
     </TableLayout>
+
+
 </LinearLayout>
