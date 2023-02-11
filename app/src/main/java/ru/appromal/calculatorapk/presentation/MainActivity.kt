@@ -12,11 +12,21 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var textTaskView: TextView
     private lateinit var textAnswerView: TextView
+    private val buttons =arrayOf( R.id.btn_0, R.id.btn_1, R.id.btn_2, R.id.btn_3, R.id.btn_4,
+        R.id.btn_5, R.id.btn_6, R.id.btn_7, R.id.btn_8, R.id.btn_9,
+        R.id.btn_dot, R.id.btn_open_bracket, R.id.btn_close_bracket,
+        R.id.btn_share, R.id.btn_multiply, R.id.btn_minus, R.id.btn_sum)
+    private val signs = arrayOf( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        '.', '(', ')', '/', '*', '-', '+')
+
     private lateinit var mVM: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        orientation()
+        setContentView(when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_PORTRAIT -> R.layout.activity_vertical
+            else -> R.layout.activity_horizontal
+        })
 
         mVM = ViewModelProvider(this, MainViewModelFactory())[MainViewModel::class.java]
         textTaskView = findViewById(R.id.task)
@@ -27,34 +37,14 @@ class MainActivity : AppCompatActivity() {
             textAnswerView.text = test.dAnswer
         }
 
-        findViewById<TextView>(R.id.btn_0).setOnClickListener{mVM.addSign(DAddSign(dSign = '0'))}
-        findViewById<TextView>(R.id.btn_1).setOnClickListener{mVM.addSign(DAddSign(dSign = '1'))}
-        findViewById<TextView>(R.id.btn_2).setOnClickListener{mVM.addSign(DAddSign(dSign = '2'))}
-        findViewById<TextView>(R.id.btn_3).setOnClickListener{mVM.addSign(DAddSign(dSign = '3'))}
-        findViewById<TextView>(R.id.btn_4).setOnClickListener{mVM.addSign(DAddSign(dSign = '4'))}
-        findViewById<TextView>(R.id.btn_5).setOnClickListener{mVM.addSign(DAddSign(dSign = '5'))}
-        findViewById<TextView>(R.id.btn_6).setOnClickListener{mVM.addSign(DAddSign(dSign = '6'))}
-        findViewById<TextView>(R.id.btn_7).setOnClickListener{mVM.addSign(DAddSign(dSign = '7'))}
-        findViewById<TextView>(R.id.btn_8).setOnClickListener{mVM.addSign(DAddSign(dSign = '8'))}
-        findViewById<TextView>(R.id.btn_9).setOnClickListener{mVM.addSign(DAddSign(dSign = '9'))}
-        findViewById<TextView>(R.id.btn_dot).setOnClickListener{mVM.addSign(DAddSign(dSign = '.'))}
-
-        findViewById<TextView>(R.id.btn_open_bracket).setOnClickListener{mVM.addSign(DAddSign(dSign = '('))}
-        findViewById<TextView>(R.id.btn_close_bracket).setOnClickListener{mVM.addSign(DAddSign(dSign = ')'))}
-        findViewById<TextView>(R.id.btn_share).setOnClickListener{mVM.addSign(DAddSign(dSign = '/'))}
-        findViewById<TextView>(R.id.btn_multiply).setOnClickListener{mVM.addSign(DAddSign(dSign = '*'))}
-        findViewById<TextView>(R.id.btn_minus).setOnClickListener{mVM.addSign(DAddSign(dSign = '-'))}
-        findViewById<TextView>(R.id.btn_sum).setOnClickListener{mVM.addSign(DAddSign(dSign = '+'))}
+        for (i in buttons.indices) {
+            findViewById<TextView>(buttons[i]).setOnClickListener {
+                mVM.addSign(DAddSign(dSign = signs[i]))
+            }
+        }
 
         findViewById<TextView>(R.id.btn_back).setOnClickListener{mVM.deleteChar()}
         findViewById<TextView>(R.id.btn_answer).setOnClickListener{mVM.returnAnswer(reset = true)}
         findViewById<TextView>(R.id.btn_clear).setOnClickListener{mVM.deleteTask()}
-    }
-
-    private fun orientation(){
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            setContentView(R.layout.activity_vertical)
-        else
-            setContentView(R.layout.activity_horizontal)
     }
 }
